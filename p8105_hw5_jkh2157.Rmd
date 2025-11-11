@@ -184,7 +184,7 @@ The data set contains information on appx 55,000 homicide cases reported by 50 l
 * victim_first, victim_last, victim_age, victim_sex, victim_race – demographic information about the victim.
 * city and state – where the homicide occurred.
 * lat and lon – latitude and longitude coordinates for the homicide location.
-* disposition – case status, which can take one of three values: Closed by arrest, Closed without arrest (exceptionally cleared), Open/No arrest
+* disposition – case status, which can take one of three values: Closed by arrest, Closed without arrest (exceptionally cleared), Open/No arrest.
 
 
 
