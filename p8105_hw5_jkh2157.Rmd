@@ -1,0 +1,23 @@
+---
+title: "p8105_Hw5_jkh2157"
+output: github_document
+date: "2025-11-11"
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+set.seed(1)
+```
+
+## Question 1
+
+## Creating the birthday simulation function 
+```{r}
+bday_sim = function(n_room) {
+  birthdays = sample(1:365, n_room, replace = TRUE)
+  repeated_bday = length(unique(birthdays)) < n_room
+  repeated_bday
+}
+bday_sim(20)
+```
+
