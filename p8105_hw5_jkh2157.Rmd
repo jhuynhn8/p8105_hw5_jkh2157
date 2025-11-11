@@ -186,5 +186,23 @@ The data set contains information on appx 55,000 homicide cases reported by 50 l
 * lat and lon – latitude and longitude coordinates for the homicide location.
 * disposition – case status, which can take one of three values: Closed by arrest, Closed without arrest (exceptionally cleared), Open/No arrest.
 
+## Summarizing total homicides and unsolved 
+
+```{r}
+homicide_summary=homicide_df %>% 
+  group_by(city_state) %>% 
+  summarize(
+    total_homicides=n(),
+    unsolved=sum(disposition %in% c("Closed without arrest", "Open/No arrest"))
+  )
+
+homicide_summary %>% 
+  arrange(desc(total_homicides)) %>% 
+  head(10) %>% 
+  knitr::kable(
+    digits = 0,
+    caption = "**Top 10 cities by total homicides and number unsolved (2007–2017)**"
+  )
+```
 
 
