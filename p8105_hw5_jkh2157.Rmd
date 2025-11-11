@@ -109,7 +109,32 @@ sim_results %>%
   )
 ```
 
-Table only shows a few values since it was iterated 5000 times for each mu 
+Table only shows a few values since it was iterated 5000 times for each mu
+
+## Summarizing power and then making a plot 
+
+```{r}
+power_results=
+  sim_results %>% 
+  group_by(true_mu) %>% 
+  summarize(
+    power=mean(reject)
+  )
+
+power_results %>% 
+  ggplot(aes(x=true_mu,y=power))+
+  geom_point()+
+  geom_line()+
+  labs(
+    title="Power of one-sample t test vs true mean",
+    x="True value of mu",
+    y="Power (proportion of rejections)")+
+  theme(
+    plot.title=element_text(face="bold")
+  )
+```
+
+As shown by the graph, when there is a larger effect size, there is higher power, and therefore more rejections. 
 
 
 
