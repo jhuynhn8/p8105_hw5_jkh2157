@@ -47,4 +47,17 @@ bday_sim_results %>%
 ```
 
 As the group sizes increase, it becomes more likely that there will be atleast 2 people who share the same birthday. 
+## Creating visualization 
+
+```{r}
+bday_sim_results %>% 
+  ggplot(aes(x = bdays, y = prob_repeat)) +
+  geom_point() +
+  geom_line() +
+  labs(
+    title = "Probability that at least two people share a birthday",
+    x = "Group size (n)",
+    y = "Probability of shared birthday"
+  )
+```
 
