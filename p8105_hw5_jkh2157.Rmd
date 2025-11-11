@@ -205,4 +205,54 @@ homicide_summary %>%
   )
 ```
 
+## Running prop.test 
+
+```{r}
+baltimore = homicide_summary %>%
+  filter(city_state == "Baltimore, MD")
+
+baltimore_test = prop.test(
+  x = baltimore$unsolved,
+  n = baltimore$total_homicides
+)
+
+baltimore_tidy=
+  baltimore_test %>% 
+  broom::tidy()
+
+baltimore_tidy %>% 
+  mutate(
+    p.value = formatC(p.value, format = "e", digits = 2)
+  ) %>% 
+  select(estimate, conf.low, conf.high, p.value) %>%
+  knitr::kable(
+    caption = "**Proportion of unsolved homicides in Baltimore, MD**",
+    digits = 3
+  )
+
+```
+
+```{r}
+
+city_results =
+  homicide_summary |>
+  mutate(
+    prop_test = map2(unsolved, total_homicides,
+                     ~prop.test(.x, .y)),
+    prop_tidy = map(prop_test, broom::tidy)
+  ) |>
+  unnest(prop_tidy) |>
+  select(city_state, total_homicides, unsolved, estimate, conf.low, conf.high
+  )
+
+city_results |>
+  arrange(desc(estimate)) |>
+  slice_head(n = 10) |>
+  knitr::kable(
+    digits = 3,
+    caption = "**Top 10 cities by proportion of unsolved homicides**"
+  )
+```
+
+
 
