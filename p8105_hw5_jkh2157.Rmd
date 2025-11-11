@@ -21,3 +21,30 @@ bday_sim = function(n_room) {
 bday_sim(20)
 ```
 
+## Running simulaton for room sizes 2-50 
+
+```{r}
+bday_sim_results = 
+  expand_grid(
+    bdays = 2:50,
+    iter = 1:10000   
+  ) %>% 
+  mutate(
+    results = map_lgl(bdays, bday_sim)
+  ) %>% 
+  group_by(bdays) %>% 
+  summarize(
+    prob_repeat = mean(results)
+  )
+
+#adding summary table 
+bday_sim_results %>% 
+  knitr::kable(
+    digits = 3,
+    caption = "Estimated probability that at least two people share a birthday"
+  )
+
+```
+
+As the group sizes increase, it becomes more likely that there will be atleast 2 people who share the same birthday. 
+
