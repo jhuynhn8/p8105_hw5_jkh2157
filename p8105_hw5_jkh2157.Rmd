@@ -166,3 +166,25 @@ mean_results %>%
 
 As the graph shows, the average of mu across rejected tests is not equal to the true mu. This is because its biased upwards (especially when the true mu is smaller) since only the extreme (significant) samples are included. This illustrates a case of selection bias. 
 
+## Question 3 
+
+## Import data set 
+
+```{r}
+homicide_df = read_csv("Data/homicide-data.csv")
+
+homicide_df = homicide_df %>%
+  mutate(city_state = str_c(city, ", ", state))
+```
+
+The data set contains information on appx 55,000 homicide cases reported by 50 large US city police departments between 2007-2017. Each row represents a single homicide case, and include information about the victim, location, and case outcome. 
+
+* uid – a unique identifier for each homicide case.
+* reported_date – date the homicide was reported.
+* victim_first, victim_last, victim_age, victim_sex, victim_race – demographic information about the victim.
+* city and state – where the homicide occurred.
+* lat and lon – latitude and longitude coordinates for the homicide location.
+* disposition – case status, which can take one of three values: Closed by arrest, Closed without arrest (exceptionally cleared), Open/No arrest
+
+
+
