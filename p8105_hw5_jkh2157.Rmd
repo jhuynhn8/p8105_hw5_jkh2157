@@ -6,6 +6,7 @@ date: "2025-11-11"
 
 ```{r setup, include=FALSE}
 library(tidyverse)
+library(broom)
 set.seed(1)
 ```
 
@@ -47,6 +48,7 @@ bday_sim_results %>%
 ```
 
 As the group sizes increase, it becomes more likely that there will be atleast 2 people who share the same birthday. 
+
 ## Creating visualization 
 
 ```{r}
@@ -60,4 +62,54 @@ bday_sim_results %>%
     y = "Probability of shared birthday"
   )
 ```
+
+## Question 2 
+
+## Creating T-Test function 
+```{r}
+sim_ttest = function(mu, n = 30, sigma = 5) {
+  
+  x = rnorm(n, mean = mu, sd = sigma)
+  
+  t_out = t.test(x, mu = 0)
+  
+  broom::tidy(t_out) %>% 
+    select(estimate, p.value) %>% 
+    rename(
+      mu_hat  = estimate,
+      p_value = p.value
+    )
+}
+```
+
+## Running Simulation 
+
+```{r}
+sim_results = 
+  expand_grid(
+    true_mu = 0:6,
+    iter    = 1:5000
+  ) %>% 
+  mutate(
+    sim = map(true_mu, sim_ttest)
+  ) %>% 
+  unnest(sim) %>% 
+  mutate(
+    reject = p_value < 0.05
+  )
+
+sim_results %>% 
+  filter(true_mu %in% 0:6) %>%       
+  select(true_mu, iter, mu_hat, p_value, reject) %>% 
+  group_by(true_mu) %>% 
+  slice_head(n = 5) %>%              
+  knitr::kable(
+    digits = 3,
+    caption = "**Example of raw simulation results for μ = 0–6 (first 5 per group)**"
+  )
+```
+
+Table only shows a few values since it was iterated 5000 times for each mu 
+
+
 
