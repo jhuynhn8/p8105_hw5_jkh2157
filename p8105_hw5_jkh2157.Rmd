@@ -247,12 +247,32 @@ city_results =
 
 city_results |>
   arrange(desc(estimate)) |>
-  slice_head(n = 10) |>
   knitr::kable(
     digits = 3,
     caption = "**Top 10 cities by proportion of unsolved homicides**"
   )
 ```
 
+## Creating plot 
 
+```{r fig.height=8, fig.width=7}
+city_results |>
+  mutate(
+    city_state = fct_reorder(city_state, estimate)
+  ) |>
+  ggplot(aes(x = city_state, y = estimate, color=city_state)) +
+  geom_point(show.legend=FALSE) +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0.4,show.legend = FALSE) +
+  coord_flip() +
+  labs(
+    title = "Proportion of unsolved homicides by city (95% CI)",
+    x = "City",
+    y = "Estimated proportion unsolved"
+  ) +
+  theme_minimal() +
+  theme(
+   axis.text.y = element_text(size = 6, color = "black"), 
+  axis.text.x = element_text(color = "black") )            
+```
 
+The figure shows the estimate proportion of unsolved homicides across major US cities. Chicago, New Orleans, and Baltimore appear to have the highest proportions. In contrast, Tulsa, AL appears at the bottom with an unusally low unsolved proportion (based on the data set this is indicative of either a small sample size or reporting anomaly)
